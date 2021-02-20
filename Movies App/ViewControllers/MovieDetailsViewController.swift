@@ -46,8 +46,10 @@ class MovieDetailsViewController: UIViewController {
     
     func subscribeToMovie(){
         movieDetailsVM.movie.subscribe(onNext: {[weak self] movie in
-            let url = URL(string:"https://image.tmdb.org/t/p/w400" + movie.backdropPath!)
-            self?.movieImage.kf.setImage(with: url)
+            if let image = movie.backdropPath{
+                let url = URL(string:"https://image.tmdb.org/t/p/w400" + image)
+                self?.movieImage.kf.setImage(with: url)
+            }
             self?.movieTitle.text = movie.title
             self?.movieDescription.text = movie.overview
             }).disposed(by: disposeBag)

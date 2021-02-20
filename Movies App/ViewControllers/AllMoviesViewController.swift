@@ -18,11 +18,12 @@ class AllMoviesViewController: UIViewController {
     var movies: Movies? = nil
     var moviesType = 0
     var selectedMovieId: Int?
+    var page = 1
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollection()
-        getMovies()
+        getMovies(page: page)
         subscribeToMovies()
         setNeedsStatusBarAppearanceUpdate()
     }
@@ -40,14 +41,14 @@ class AllMoviesViewController: UIViewController {
         return .lightContent
     }
     
-    func getMovies(){
+    func getMovies(page: Int){
         switch moviesType{
         case 1:
-            allMoviesVM.getNowPlayingMovies()
+            allMoviesVM.getNowPlayingMovies(page: page)
         case 2:
-            allMoviesVM.getTopRatedMovies()
+            allMoviesVM.getTopRatedMovies(page: page)
         case 3:
-            allMoviesVM.getPopularMovies()
+            allMoviesVM.getPopularMovies(page: page)
         default:
             return
         }
@@ -55,17 +56,32 @@ class AllMoviesViewController: UIViewController {
     
     func subscribeToMovies(){
         allMoviesVM.nowPlayingMovies.subscribe(onNext: {[weak self] movies in
-            self?.movies = movies
+            if(self?.page == 1){
+                self?.movies = movies
+            }
+            else{
+              self?.movies?.results.append(contentsOf: movies.results)
+            }
             self?.navigationItem.title = "Now Playing"
             self?.collectionView.reloadData()
             }).disposed(by: disposeBag)
         allMoviesVM.topRatedMovies.subscribe(onNext: {[weak self] movies in
-            self?.movies = movies
+            if(self?.page == 1){
+                self?.movies = movies
+            }
+            else{
+                self?.movies?.results.append(contentsOf: movies.results)
+            }
             self?.navigationItem.title = "Top Rated"
             self?.collectionView.reloadData()
             }).disposed(by: disposeBag)
         allMoviesVM.popularMovies.subscribe(onNext: {[weak self] movies in
-            self?.movies = movies
+            if(self?.page == 1){
+                self?.movies = movies
+            }
+            else{
+                self?.movies?.results.append(contentsOf: movies.results)
+            }
             self?.navigationItem.title = "Popular"
             self?.collectionView.reloadData()
             }).disposed(by: disposeBag)
@@ -94,10 +110,11 @@ extension AllMoviesViewController: UICollectionViewDelegate , UICollectionViewDa
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AllNowPlayingMovieCell", for: indexPath) as! AllNowPlayingMovieCell        
-        guard let movies = self.movies else {return cell}
-        guard let url = URL(string: ("https://image.tmdb.org/t/p/w400" + (movies.results[indexPath.row].posterPath)!)) else {return cell}
+        guard let movies = self.movies?.results else {return cell}
+        guard let image = movies[indexPath.row].posterPath else {return cell}
+        guard let url = URL(string: ("https://image.tmdb.org/t/p/w400" + image)) else {return cell}
         cell.allNowPlayingMovieImage.kf.setImage(with: url)
-        cell.movieTitle.text = movies.results[indexPath.row].title
+        cell.movieTitle.text = movies[indexPath.row].title
         return cell
     }
     
@@ -108,6 +125,14 @@ extension AllMoviesViewController: UICollectionViewDelegate , UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedMovieId = movies?.results[indexPath.row].id
         performSegue(withIdentifier: "ToMovieDetailsFromAll", sender: self)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let movies = self.movies else {return}
+        if(indexPath.row == movies.results.count - 1){
+            self.page += 1
+            self.getMovies(page: self.page)
+        }
     }
     
 }

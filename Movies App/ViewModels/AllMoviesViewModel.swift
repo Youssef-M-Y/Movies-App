@@ -18,8 +18,8 @@ class AllMoviesViewModel {
     var popularMovies = PublishSubject<Movies>()
     var topRatedMovies = PublishSubject<Movies>()
     
-    func getNowPlayingMovies(){
-        api.getNowPlayingMovies(api_key: apiKey) { (result) in
+    func getNowPlayingMovies(page: Int){
+        api.getNowPlayingMovies(api_key: apiKey, page: "\(page)") { (result) in
             switch result{
             case .success(let nowPlayingMovies):
                 guard let nowPlayingMovies = nowPlayingMovies else {return}
@@ -30,8 +30,8 @@ class AllMoviesViewModel {
         }
     }
     
-    func getPopularMovies(){
-        api.getPopularMovies(api_key: apiKey) { (result) in
+    func getPopularMovies(page: Int){
+        api.getPopularMovies(api_key: apiKey, page: "\(page)") { (result) in
             switch result{
             case.success(let popularMovies):
                 guard let popularMovies = popularMovies else {return}
@@ -42,8 +42,8 @@ class AllMoviesViewModel {
         }
     }
         
-    func getTopRatedMovies(){
-        api.getTopRatedMovies(api_key: apiKey) { (result) in
+    func getTopRatedMovies(page: Int){
+        api.getTopRatedMovies(api_key: apiKey, page: "\(page)") { (result) in
             switch result{
             case.success(let topRatedMovies):
                 guard let topRatedMovies = topRatedMovies else {return}

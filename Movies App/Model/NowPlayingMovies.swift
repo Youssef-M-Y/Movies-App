@@ -12,7 +12,7 @@ import Foundation
 // MARK: - Gate
 struct Movies: Codable {
     let page: Int?
-    let results: [NowPlayingResult]
+    var results: [NowPlayingResult]
     let dates: Dates?
     let totalPages, totalResults: Int?
 

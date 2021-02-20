@@ -16,6 +16,12 @@ class AlamoFireNetworking<T: Codable> :NetworkingProtocol {
         let headers = Alamofire.HTTPHeaders(headers ?? [:])
         
         DispatchQueue.global().async {
+//            var url = URLComponents(string: baseUrl + uri)
+//            url?.queryItems = queryParams?.map({ (pair) in
+//                return URLQueryItem(name: pair.key, value: pair.value)
+//            })
+            
+            
             AF.request(baseUrl + uri, method: method, parameters: body, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
                 guard let statusCode = response.response?.statusCode else {
                     completion(.failure(.init(code: 0, body: nil, headers: nil)))

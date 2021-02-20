@@ -21,11 +21,12 @@ class HomeViewController: UIViewController {
     var categoryTitle = ["Now Playing", "Top Rated", "Popular"]
     var seeAllIndex = 0
     static var selectedMovieId = BehaviorRelay<Int>(value: 0)
+    var page = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configuretableView()
-        getMovies()
+        getMovies(page: page)
         subscribeToMovies()
         subscribeToMovieId()
     }
@@ -39,10 +40,10 @@ class HomeViewController: UIViewController {
         return .lightContent
     }
     
-    func getMovies(){
-        homeVM.getNowPlayingMovies()
-        homeVM.getPopularMovies()
-        homeVM.getTopRatedMovies()
+    func getMovies(page: Int){
+        homeVM.getNowPlayingMovies(page: page)
+        homeVM.getPopularMovies(page: page)
+        homeVM.getTopRatedMovies(page: page)
     }
     
     func subscribeToMovies(){

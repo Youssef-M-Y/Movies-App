@@ -11,7 +11,7 @@ import Foundation
 // MARK: - Gate
 struct TopRatedMovies: Codable {
     let page: Int
-    let results: [TopRatedResult]
+    var results: [TopRatedResult]
     let totalResults, totalPages: Int
 
     enum CodingKeys: String, CodingKey {

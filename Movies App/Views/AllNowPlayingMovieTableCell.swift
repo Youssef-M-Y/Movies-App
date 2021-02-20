@@ -34,6 +34,9 @@ class AllNowPlayingMovieTableCell: UITableViewCell {
         layout.itemSize = CGSize(width: frame.width/3, height: allNowPlayingMovieCollection.frame.height)
         layout.minimumInteritemSpacing = 5
         layout.minimumLineSpacing = 5
+        
+        self.allNowPlayingMovieCollection.reloadData()
+        
         allNowPlayingMovieCollection.collectionViewLayout = layout
     }
 
