@@ -441,6 +441,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="GgB-Ao-ypc"/>
                     <connections>
+                        <outlet property="searchIcon" destination="5pO-Dd-6fN" id="RY3-24-CJ6"/>
                         <outlet property="tableView" destination="O96-cw-9UN" id="g0h-a8-Kt9"/>
                         <segue destination="8iN-5h-wtr" kind="show" identifier="ToAllMovies" id="vPq-Hh-DzK"/>
                         <segue destination="Bun-1N-PgG" kind="show" identifier="ToMovieDetailsFromHome" id="bQF-87-6SS"/>
@@ -526,7 +527,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="p1S-e5-AI1"/>
+        <segue reference="bQF-87-6SS"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="search" width="50" height="50"/>

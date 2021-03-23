@@ -13,6 +13,7 @@ import RxCocoa
 
 class HomeViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchIcon: UIButton!
     let homeVM = HomeViewModel()
     let disposeBag = DisposeBag()
     var nowPlayingMovies: Movies?

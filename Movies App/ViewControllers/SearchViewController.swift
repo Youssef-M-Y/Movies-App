@@ -22,9 +22,21 @@ class SearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.isHidden = true
+        configureTableView()
         searchBar.delegate = self
         subscribeToMovies()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.barTintColor = .black
+    }
+    
+    func configureTableView(){
+        tableView.isHidden = true
+        tableView.tableFooterView = UIView()
     }
     
     func getMovies(page: String){
@@ -77,7 +89,8 @@ extension SearchViewController: UITableViewDelegate , UITableViewDataSource{
 
 extension SearchViewController: UISearchBarDelegate{
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchVM.searchText.accept(searchBar.text ?? "")
+        let text = searchBar.text?.replacingOccurrences(of: " ", with: "%20")
+        searchVM.searchText.accept(text ?? "")
         self.getMovies(page: page)
         self.view.endEditing(true)
     }
